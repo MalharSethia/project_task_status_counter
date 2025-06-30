@@ -16,40 +16,35 @@
             
             <!-- Add the status counts display after the main card content -->
             <xpath expr="//div[hasclass('o_kanban_card_content')]" position="after">
-                <div class="o_project_status_counts" t-if="record.task_count.raw_value > 0">
+                <div class="o_project_status_counts" t-if="record.task_count.raw_value and record.task_count.raw_value > 0">
                     <div class="o_status_counts_container">
-                        <t t-if="record.task_in_progress_count.raw_value > 0">
-                            <span class="o_status_badge o_status_in_progress" 
-                                  t-att-title="'In Progress: ' + record.task_in_progress_count.value + ' (' + Math.round((record.task_in_progress_count.raw_value / record.task_count.raw_value) * 100) + '%)'">
-                                <i class="fa fa-play-circle" title="In Progress"/>
+                        <t t-if="record.task_in_progress_count.raw_value and record.task_in_progress_count.raw_value > 0">
+                            <span class="o_status_badge o_status_in_progress" title="In Progress Tasks">
+                                <i class="fa fa-play-circle"/>
                                 <t t-esc="record.task_in_progress_count.value"/>
                             </span>
                         </t>
-                        <t t-if="record.task_changes_requested_count.raw_value > 0">
-                            <span class="o_status_badge o_status_changes_requested"
-                                  t-att-title="'Changes Requested: ' + record.task_changes_requested_count.value + ' (' + Math.round((record.task_changes_requested_count.raw_value / record.task_count.raw_value) * 100) + '%)'">
-                                <i class="fa fa-edit" title="Changes Requested"/>
+                        <t t-if="record.task_changes_requested_count.raw_value and record.task_changes_requested_count.raw_value > 0">
+                            <span class="o_status_badge o_status_changes_requested" title="Changes Requested Tasks">
+                                <i class="fa fa-edit"/>
                                 <t t-esc="record.task_changes_requested_count.value"/>
                             </span>
                         </t>
-                        <t t-if="record.task_approved_count.raw_value > 0">
-                            <span class="o_status_badge o_status_approved"
-                                  t-att-title="'Approved: ' + record.task_approved_count.value + ' (' + Math.round((record.task_approved_count.raw_value / record.task_count.raw_value) * 100) + '%)'">
-                                <i class="fa fa-thumbs-up" title="Approved"/>
+                        <t t-if="record.task_approved_count.raw_value and record.task_approved_count.raw_value > 0">
+                            <span class="o_status_badge o_status_approved" title="Approved Tasks">
+                                <i class="fa fa-thumbs-up"/>
                                 <t t-esc="record.task_approved_count.value"/>
                             </span>
                         </t>
-                        <t t-if="record.task_done_count.raw_value > 0">
-                            <span class="o_status_badge o_status_done"
-                                  t-att-title="'Done: ' + record.task_done_count.value + ' (' + Math.round((record.task_done_count.raw_value / record.task_count.raw_value) * 100) + '%)'">
-                                <i class="fa fa-check-circle" title="Done"/>
+                        <t t-if="record.task_done_count.raw_value and record.task_done_count.raw_value > 0">
+                            <span class="o_status_badge o_status_done" title="Done Tasks">
+                                <i class="fa fa-check-circle"/>
                                 <t t-esc="record.task_done_count.value"/>
                             </span>
                         </t>
-                        <t t-if="record.task_canceled_count.raw_value > 0">
-                            <span class="o_status_badge o_status_canceled"
-                                  t-att-title="'Canceled: ' + record.task_canceled_count.value + ' (' + Math.round((record.task_canceled_count.raw_value / record.task_count.raw_value) * 100) + '%)'">
-                                <i class="fa fa-times-circle" title="Canceled"/>
+                        <t t-if="record.task_canceled_count.raw_value and record.task_canceled_count.raw_value > 0">
+                            <span class="o_status_badge o_status_canceled" title="Canceled Tasks">
+                                <i class="fa fa-times-circle"/>
                                 <t t-esc="record.task_canceled_count.value"/>
                             </span>
                         </t>
