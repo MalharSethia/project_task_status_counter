@@ -1,3 +1,4 @@
+# models/project.py
 from odoo import models, fields, api
 
 class ProjectProject(models.Model):
@@ -67,9 +68,14 @@ class ProjectProject(models.Model):
     
     @api.depends('task_ids.state')
     def _compute_task_status_counts(self):
-        """Compute the count of tasks for each status"""
+        """Compute the count of tasks for each status including archived/closed tasks"""
         for project in self:
-            if not project.task_ids:
+            # Get ALL tasks for this project, including archived/inactive ones
+            all_tasks = self.env['project.task'].with_context(active_test=False).search([
+                ('project_id', '=', project.id)
+            ])
+            
+            if not all_tasks:
                 project.task_in_progress_count = 0
                 project.task_changes_requested_count = 0
                 project.task_approved_count = 0
@@ -82,14 +88,14 @@ class ProjectProject(models.Model):
                 project.task_canceled_percent = "0%"
                 continue
             
-            total_tasks = len(project.task_ids)
+            total_tasks = len(all_tasks)
             
             # Count tasks by state using filtered - matching your actual states
-            in_progress_count = len(project.task_ids.filtered(lambda t: t.state == '01_in_progress'))
-            changes_requested_count = len(project.task_ids.filtered(lambda t: t.state == '02_changes_requested'))
-            approved_count = len(project.task_ids.filtered(lambda t: t.state == '03_approved'))
-            done_count = len(project.task_ids.filtered(lambda t: t.state == '1_done'))
-            canceled_count = len(project.task_ids.filtered(lambda t: t.state == '1_canceled'))
+            in_progress_count = len(all_tasks.filtered(lambda t: t.state == '01_in_progress'))
+            changes_requested_count = len(all_tasks.filtered(lambda t: t.state == '02_changes_requested'))
+            approved_count = len(all_tasks.filtered(lambda t: t.state == '03_approved'))
+            done_count = len(all_tasks.filtered(lambda t: t.state == '1_done'))
+            canceled_count = len(all_tasks.filtered(lambda t: t.state == '1_canceled'))
             
             # Set counts
             project.task_in_progress_count = in_progress_count
